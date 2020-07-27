@@ -45,10 +45,10 @@ const init = async () => {
   const gitignoreFile = path.join(process.cwd(), './.gitignore');
   fs.appendFileSync(gitignoreFile, '\n/init/*');
 
-  // logInfo('cyan', '开始下载umi 依赖');
-  // await build('npm i', '✔️   umi 依赖下载完毕');
-  // logInfo('cyan', '开始下载自定义 依赖');
-  // await build('npm i -S ' + dependenciesList, '✔️   前端项目依赖下载完毕~');
+  logInfo('cyan', '开始下载umi 依赖');
+  await build('npm i', '✔️   umi 依赖下载完毕');
+  logInfo('cyan', '开始下载自定义 依赖');
+  await build('npm i -S ' + dependenciesList, '✔️   前端项目依赖下载完毕~');
   await build('rm -rf ./.git/', '');
   await build('git init', '');
   await build('git add .', '');
