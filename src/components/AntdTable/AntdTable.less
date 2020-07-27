@@ -1,0 +1,30 @@
+.table_box {
+  background-color: #fff;
+  .page {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px 20px;
+    :global {
+      .ant-pagination-item-link,
+      .ant-pagination-item > a,
+      .ant-pagination-item-ellipsis {
+        line-height: 22px;
+      }
+      .ant-pagination-item-active {
+        border-color: @themeColor;
+        background-color: @themeColor;
+      }
+      .ant-pagination-item-active > a {
+        color: #fff;
+      }
+    }
+  }
+  .table {
+    margin: 0 16px;
+  }
+  :global {
+    .ant-table-thead > tr > th {
+      background-color: #F6F8FB;
+    }
+  }
+}

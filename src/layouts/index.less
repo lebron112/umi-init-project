@@ -1,0 +1,44 @@
+@import '~@/styles/reset.css';
+
+.ellipsis2 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.ellipsis1 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder {
+  color: #bfc2cc !important;
+}
+
+input:-moz-placeholder,
+textarea:-moz-placeholder {
+  color: #bfc2cc !important;
+}
+
+input::-moz-placeholder,
+textarea::-moz-placeholder {
+  color: #bfc2cc !important;
+}
+
+input:-ms-input-placeholder,
+textarea:-ms-input-placeholder {
+  color: #bfc2cc !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #bfc2cc !important;
+}
+// 修改默认样式 在最外层body包一个 class名字 但无法修改未挂载进root节点里的样式
+// .layout {
+//   @import '~@/styles/global.less';
+// }

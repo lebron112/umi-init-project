@@ -1,0 +1,49 @@
+@prefix: draggable-antd-modal;
+.content {
+  :global {
+    .ant-modal-header {
+      cursor: move;
+    }
+    .draggable-antd-modal-header {
+      cursor: move;
+    }
+  }
+}
+
+.base_header {
+  height: 46px;
+  background: linear-gradient(
+    90deg,
+    rgba(105, 159, 242, 1) 0%,
+    rgba(95, 124, 224, 1) 100%
+  );
+  border-radius: 4px 4px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 15px;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 500;
+  img {
+    width: 28px;
+    cursor: pointer;
+  }
+}
+.base_footer {
+  background: #fff;
+  border-radius: 0 0 4px 4px;
+  padding: 10px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid @col-e8e8e8;
+  :global {
+    .ant-btn {
+      // &:first-child {
+      //   margin-right: 16px;
+      // }
+      margin-left: 8px;
+    }
+  }
+}

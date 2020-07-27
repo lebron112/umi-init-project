@@ -1,0 +1,97 @@
+.warn_title {
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 22px;
+  .icon_warning {
+    color: @col-warn;
+    font-size: 24px;
+    margin-right: @boxPositionRight;
+  }
+}
+.space {
+  display: inline-block;
+  margin-left: 40px;
+}
+.confirm_ok {
+  width: 76px;
+  height: 28px;
+  font-size: 12px;
+  background-color: #4b8cf0;
+  border-color: #4b8cf0;
+}
+.confirm_cancel {
+  width: 76px;
+  height: 28px;
+  font-size: 12px;
+}
+.basic_container {
+  :global {
+    .ant-modal-confirm-body {
+      .ant-modal-confirm-content {
+        margin-top: 0;
+      }
+    }
+    .ant-modal-content {
+      .ant-modal-body {
+        padding: 0 0 10px 0;
+      }
+    }
+    .ant-modal-body {
+      padding: 0 0 10px 0;
+    }
+    .ant-modal-confirm-btns {
+      margin-top: 10px;
+    }
+  }
+}
+.basic_ok {
+  background-color: #4b8cf0;
+  border-color: #4b8cf0;
+  border-radius: 3px;
+  margin-right: 16px;
+  margin-left: 0;
+  width: 73px;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10px;
+  .basic_cancel {
+    margin-right: 8px;
+  }
+}
+
+.basic_cancel {
+  border-radius: 3px;
+  width: 73px;
+}
+.basic_content {
+  border-bottom: 1px solid @col-e8e8e8;
+  .header {
+    height: 46px;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 22px 0 16px;
+    background-color: #d7e7ff;
+    align-items: center;
+    border-radius: 4px 4px 0px 0px;
+
+    p {
+      font-weight: 500;
+      font-size: 16px;
+      color: @col-333;
+    }
+    .close {
+      font-size: 16px;
+      color: @col-333;
+      cursor: pointer;
+      &:hover {
+        color: @col-666;
+      }
+    }
+  }
+}
