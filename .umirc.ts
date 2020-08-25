@@ -27,7 +27,7 @@ export default defineConfig({
       },
     }
   },
-  cssModulesTypescriptLoader: {},
+  cssModulesTypescriptLoader: { mode: 'verify' },
   // ssr: { mode: 'stream', },
     chainWebpack: (conf: any) => {
     conf.output.store.set('filename', 'js/[name].js');
