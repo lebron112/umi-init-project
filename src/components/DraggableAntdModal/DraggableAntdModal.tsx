@@ -2,9 +2,18 @@ import React, { Component, useEffect, ReactElement, useState, useRef } from 'rea
 import { Modal as AntdModal } from 'antd';
 import { ModalProps } from 'antd/lib/modal';
 import cssExports from './DraggableAntdModal.less';
-import DelJPG from '@/Images/news/del.jpg';
+import DelJPG from './del.jpg';
 import { getMaxModalZIndex, storeModalZIndex } from '@/utils/tools';
 
+const getMaxModalZIndex = (): number => {
+  const res = sessionStorage.getItem('modal_zIndex');
+  if (!res) return 1000;
+  return Number(res) || 1000;
+};
+
+const storeModalZIndex = (zIndex: number) => {
+  sessionStorage.setItem('modal_zIndex', zIndex + '');
+};
 const containsNode = (parentNode: any, childrenNode: any) => {
   if (!parentNode || !childrenNode) {
     return false;

@@ -3,9 +3,10 @@ import themeConfig from './src/theme/theme';
 import layoutRoutes from './src/router';
 
 const extractCssLoaderOptions = {
-  hmr: true,
-  publicPath: '../'
+  publicPath: '../',
+  esModule: false,
 };
+
 export default defineConfig({
   hash: true,
   theme: themeConfig,

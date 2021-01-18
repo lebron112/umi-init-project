@@ -2,9 +2,15 @@ import React, { useEffect, useState, forwardRef, memo, useImperativeHandle, useR
 import { Pagination, Table } from 'antd';
 import cssExports from './AntdTable.less';
 import { TableProps } from 'antd/lib/table';
-import { IRequestRes } from '@/services/axios';
-import { IPageData } from '@/services/basicInfo/basicInfo.types';
+import { IRequestRes } from '@/services/request';
 import Column, { ColumnProps } from 'antd/lib/table/Column';
+
+interface IPageData<T> {
+  size: number;
+  records: T[];
+  total: number;
+  pages: number;
+}
 export interface AntdTableRef {
 
   /**
