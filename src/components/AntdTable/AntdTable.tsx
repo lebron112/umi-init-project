@@ -2,14 +2,14 @@ import React, { useEffect, useState, forwardRef, memo, useImperativeHandle, useR
 import { Pagination, Table } from 'antd';
 import cssExports from './AntdTable.less';
 import { TableProps } from 'antd/lib/table';
-import { IRequestRes } from '@/services/request';
 import Column, { ColumnProps } from 'antd/lib/table/Column';
-
+import { IRequestRes } from '@/services/request';
+import { GetRowKey } from 'antd/lib/table/interface';
 interface IPageData<T> {
   size: number;
   records: T[];
   total: number;
-  pages: number;
+  // pages: number;
 }
 export interface AntdTableRef {
 
@@ -108,17 +108,20 @@ const AntdTable = (props: AntdTableProps,
     </div>
   );
 };
+type getAttibuteType<K, T> = K extends keyof T ? T[K] : never;
+
 /** 带类型的colum  */
 export function bindColumn<T extends { [key: string]: any }>() {
-  return (props: Omit<ColumnProps<T>, 'key'> & { dataIndex: keyof T }) => {
-    const dataIndex: keyof T = props.dataIndex as string;
+  type TDataIndex = keyof T;
+  return (props: Omit<ColumnProps<T>, 'key'> & { dataIndex: TDataIndex }) => {
+    const dataIndex: TDataIndex = props.dataIndex as string;
     const columnProps = {
       ...props,
       dataIndex: dataIndex as string | number | (string | number)[] | undefined,
       key: dataIndex as string | number | undefined,
     };
     if (props.render) {
-      columnProps.render = (value: any, record: T, index: number) => {
+      columnProps.render = (value: getAttibuteType<TDataIndex, T>, record: T, index: number) => {
         return props.render && props.render(value, record, index);
       };
     }
@@ -127,3 +130,88 @@ export function bindColumn<T extends { [key: string]: any }>() {
 }
 
 export default memo(forwardRef(AntdTable));
+
+export interface IQueryPage {
+  current: number;
+  size: number;
+}
+
+type TUsePageCurrentActionRes<T, ST> = [
+  searchInfo: ST,
+  pageInfo: TPageInfo,
+  data: T[],
+  total: number,
+  loading: boolean,
+  change: (page: number, pageSize?: number) => void,
+  setSearch: (v: ST) => void,
+];
+type TPageInfo = { current: number, pageSize: number };
+
+/** 泛型接受2参数 1为 分页数据单项类型 2位搜索类型  */
+export const usePageCurrentAction = <T extends { [key: string]: any }, ST extends { [key: string]: any }>(
+  { page = 1, size = 10 },
+  action: (params: IQueryPage & ST) => Promise<IPageData<T>>,
+  hide = false,
+): TUsePageCurrentActionRes<T, ST> => {
+  const change = (page: number, pageSize?: number) => {
+    !hide && setPageInfo({ current: page, pageSize: pageSize || size });
+  };
+  if (hide) return [{} as ST, { current: page, pageSize: size }, [], 0, false, change, () => { }];
+  const [pageInfo, setPageInfo] = useState<TPageInfo>({ current: page, pageSize: size });
+  const [data, setData] = useState<T[]>([]);
+  const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [searchInfo, setSerachInfo] = useState<ST>({} as ST);
+  const isPageRef = useRef(true);
+  const hasSearch = useRef(false);
+
+  const loadAction = () => {
+    setLoading(true);
+    const { current, pageSize } = pageInfo;
+    action({ current, size: pageSize, ...searchInfo }).then(res => {
+      const { total, records } = res;
+      setTotal(total);
+      setData(records);
+      setLoading(false);
+      return res;
+    }).catch(err => {
+      setLoading(false);
+      throw err;
+    });
+  };
+
+  useEffect(() => {
+    loadAction();
+  }, [pageInfo]);
+
+  useEffect(() => {
+    if ((searchInfo && Object.keys(searchInfo).length) || hasSearch.current) {
+      if (isPageRef.current) {
+        change(page, size);
+      } else {
+        const { current, pageSize } = pageInfo;
+        change(current, pageSize);
+      }
+    }
+  }, [searchInfo]);
+
+  const setSearch = (searchInfo: ST, isToPage1 = true) => {
+    isPageRef.current = isToPage1;
+    hasSearch.current = true;
+    setSerachInfo({ ...searchInfo });
+  };
+  return [
+    searchInfo, pageInfo, data, total, loading,
+    change, setSearch,
+  ];
+};
+
+export function bindTable<T extends { [key: string]: any }>() {
+  type TDataIndex = keyof T;
+  const myTable = (tableProps: Omit<TableProps<T>, 'rowKey'> & { rowKey: TDataIndex }) => {
+    const rowKey = tableProps.rowKey as any;
+    return <Table {...tableProps} rowKey={rowKey} />;
+  };
+  myTable.Column = bindColumn<T>();
+  return myTable;
+}
